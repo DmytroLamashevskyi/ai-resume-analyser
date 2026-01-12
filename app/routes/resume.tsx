@@ -30,7 +30,10 @@ const resume = () => {
     useEffect(() => {
         const loadResume = async () => {
             const resume = await kv.get(`resume:${id}`);
-            if (!resume) return;
+            if (!resume) {
+                console.log(`resume with id=${id} not found`);
+                return;
+            }
             const data = JSON.parse(resume);
             const resumeBlob = await fs.read(data.filePath);
             if (!resumeBlob) return;
@@ -43,7 +46,10 @@ const resume = () => {
             const imageUrl = URL.createObjectURL(imageBlob);
             setImageUrl(imageUrl);
 
-            setFeedback(data.feedback);
+            const parsedFeedback =
+                typeof data.feedback === "string" ? JSON.parse(data.feedback) : data.feedback;
+
+            setFeedback(parsedFeedback);
         }
         loadResume();
     }, [id]);
@@ -71,7 +77,7 @@ const resume = () => {
                     {feedback ? (
                         <div className='flex flex-col gap-8 animate-in fade-in duration-1000 '>
                             <Summary feedback={feedback} />
-                            <ATS score={feedback.ATS.score || 0} suggestions={feedback.ATS.tips || []} />
+                            <ATS score={feedback.ATS?.score || 0} suggestions={feedback.ATS?.tips || []} />
                             <Details feedback={feedback} />
                         </div>
                     ) : (

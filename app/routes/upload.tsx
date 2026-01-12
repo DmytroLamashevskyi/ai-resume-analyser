@@ -65,7 +65,7 @@ const upload = () => {
             updatedAt: new Date(),
             feedback: ''
         }
-        await kv.set(uuid, JSON.stringify(data));
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
         setStatusText('Analyzing...');
         const feedback = await ai.feedback(uploadedFile.path, prepareInstructions({ jobTitle, jobDescription, AIResponseFormat }));
@@ -75,7 +75,7 @@ const upload = () => {
         const feedbacText = typeof feedback.message.content === 'string' ? feedback.message.content : feedback.message.content[0].text;
 
         data.feedback = feedbacText;
-        await kv.set(uuid, JSON.stringify(data));
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
         setStatusText('Analysis complete, redirecting ....');
         navigate(`/resume/${uuid}`);
