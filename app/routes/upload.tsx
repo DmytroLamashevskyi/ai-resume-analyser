@@ -34,9 +34,7 @@ const upload = () => {
         const uploadedFile = await fs.upload([file]);
 
         if (!uploadedFile) {
-            setStatusText('Error: Failed to upload file');
-            setIsProcessing(false);
-            return;
+            return setStatusText('Error: Failed to upload file');
         }
 
         setStatusText('Converting your file...');
@@ -44,16 +42,14 @@ const upload = () => {
         console.log(imgFile);
 
         if (!imgFile.file) {
-            setStatusText('Error: Failed to convert file');
-            return;
+            return setStatusText('Error: Failed to convert file');
         }
 
         setStatusText('Uploading image file...');
         const uploadedImage = await fs.upload([imgFile.file]);
 
         if (!uploadedImage) {
-            setStatusText('Error: Failed to upload image file');
-            return;
+            return setStatusText('Error: Failed to upload image file');
         }
 
         setStatusText('Preparing data for analysis...');
@@ -81,8 +77,8 @@ const upload = () => {
         data.feedback = feedbacText;
         await kv.set(uuid, JSON.stringify(data));
 
-        console.log(feedbacText);
-        setStatusText('Analysis complete');
+        setStatusText('Analysis complete, redirecting ....');
+        navigate(`/resume/${uuid}`);
     }
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
