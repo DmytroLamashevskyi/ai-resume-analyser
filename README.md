@@ -1,87 +1,98 @@
-# Welcome to React Router!
+# AI Resume Analyser
 
-A modern, production-ready template for building full-stack React applications using React Router.
+AI Resume Analyser is a small portfolio project for evaluating a resume against a target role and generating structured, actionable feedback.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+> **Project status:** completed / no longer actively maintained. This repository is kept as an archived portfolio project and a snapshot of the implementation.
 
-## Features
+## What it does
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+The application lets a user:
 
-## Getting Started
+- upload a resume as a PDF;
+- provide a company name, target job title, and job description;
+- generate an ATS-oriented resume assessment with AI;
+- receive an overall score plus focused feedback for ATS compatibility, tone and style, content, structure, and skills;
+- keep analysed resumes and revisit their results through the application.
 
-### Installation
+## How it works
 
-Install the dependencies:
+1. The user signs in through Puter.
+2. A PDF resume is uploaded through Puter.js.
+3. The PDF is converted to an image for preview while the original file is retained for analysis.
+4. Job context and resume metadata are stored in Puter KV storage.
+5. Puter AI analyses the resume against the target job description using a structured prompt.
+6. The returned JSON feedback is stored and rendered as a scored resume review.
+
+## Tech stack
+
+- **React 19**
+- **React Router 7**
+- **TypeScript**
+- **Tailwind CSS 4**
+- **Vite 7**
+- **Zustand** for client state
+- **pdfjs-dist** for PDF processing
+- **Puter.js** for authentication, file storage, KV storage, and AI capabilities
+- **Docker** support for containerized builds
+
+## Feedback model
+
+The AI response is structured into several categories:
+
+- Overall score
+- ATS compatibility
+- Tone & style
+- Content
+- Structure
+- Skills
+
+Each section contains a score and concrete improvement suggestions. When a job description is supplied, the analysis takes that role into account rather than evaluating the resume only in isolation.
+
+## Local development
+
+### Prerequisites
+
+- Node.js 20+ recommended
+- npm
+
+### Install
 
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
+### Run the development server
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+The application is available at `http://localhost:5173` by default.
 
-## Building for Production
+### Type-check
 
-Create a production build:
+```bash
+npm run typecheck
+```
+
+### Production build
 
 ```bash
 npm run build
+npm start
 ```
 
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
+## Docker
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+docker build -t ai-resume-analyser .
+docker run -p 3000:3000 ai-resume-analyser
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+## Notes
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+This project depends on Puter.js and therefore requires the corresponding Puter services to be available. Resume files can contain sensitive personal information, so use test data when experimenting and review the storage/provider behavior before using real confidential documents.
 
-### DIY Deployment
+## Why this repository is archived
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+The project reached its intended scope as an experiment in combining document processing, structured AI feedback, and a lightweight React application. I am keeping the source public as a portfolio snapshot, but active development has moved to newer projects.
